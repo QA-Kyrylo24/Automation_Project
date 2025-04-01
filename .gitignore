@@ -3,8 +3,8 @@ tests/axios
 tests/playwright/placeholder.spec.ts
 mochawesome-report
 practice_tasks
-tests-examples
 typings
+tests-examples
 # Playwright
 /test-results/
 /playwright-report/
