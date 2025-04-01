@@ -4,6 +4,7 @@ tests/playwright/placeholder.spec.ts
 mochawesome-report
 practice_tasks
 tests-examples
+typings
 # Playwright
 /test-results/
 /playwright-report/
