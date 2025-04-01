@@ -1,0 +1,11 @@
+node_modules
+tests/axios
+tests/playwright/placeholder.spec.ts
+mochawesome-report
+practice_tasks
+tests-examples
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
