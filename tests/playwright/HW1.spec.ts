@@ -19,3 +19,15 @@ test('Test 1: Verify login with valid credentials', async ({ page }) => {
     await expect(page.getByText('Jane Doe')).toBeVisible();
 
 });
+
+test('Test 2: Verify user can view product details', async ({ page }) => {
+    await page.goto('https://practicesoftwaretesting.com');
+const combinationPliers = page.getByText('Combination Pliers', { exact: true });
+const productName = page.getByRole('heading', { name: 'Combination Pliers' })
+const price = page.locator('[aria-label="unit-price"]');
+const button = page.getByRole('button', { name: 'Add to cart' });
+await combinationPliers.click();
+expect(page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/product/)
+expect(productName).toHaveText('Combination Pliers');
+expect(price).toHaveText('$14.15');
+});
