@@ -21,13 +21,53 @@ test('Test 1: Verify login with valid credentials', async ({ page }) => {
 });
 
 test('Test 2: Verify user can view product details', async ({ page }) => {
+    const combinationPliers = page.getByText('Combination Pliers', { exact: true });
+    const productName = page.getByRole('heading', { name: 'Combination Pliers' })
+    const price = page.locator('[aria-label="unit-price"]');
+    const buttonCart = page.getByRole('button', { name: 'Add to cart' });
+    const buttonFavourites = page.getByRole('button', { name: 'Add to favourites' });
+
     await page.goto('https://practicesoftwaretesting.com');
-const combinationPliers = page.getByText('Combination Pliers', { exact: true });
-const productName = page.getByRole('heading', { name: 'Combination Pliers' })
-const price = page.locator('[aria-label="unit-price"]');
-const button = page.getByRole('button', { name: 'Add to cart' });
-await combinationPliers.click();
-expect(page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/product/)
-expect(productName).toHaveText('Combination Pliers');
-expect(price).toHaveText('$14.15');
+    await combinationPliers.click();
+    await expect(page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/product/)
+    await expect(productName).toHaveText('Combination Pliers');
+    await expect(price).toHaveText('14.15');
+    await expect(buttonCart).toBeVisible();
+    await expect(buttonFavourites).toBeVisible();
+});
+
+test('Test 3: Verify user can add product to cart', async ({ page }) => {
+    const slipJointPliers = page.getByRole('link', { name: 'Slip Joint Pliers' })
+    const productName = page.getByRole('heading', { name: 'Slip Joint Pliers' })
+    const price = page.locator('[aria-label="unit-price"]');
+    const buttonCart = page.getByRole('button', { name: 'Add to cart' });
+    const alert = page.getByRole('alert');
+    const quantity = page.locator('#quantity-input')
+    const cartIcon = page.getByLabel('cart');
+    const proceedToCheckout = page.getByRole('button', { name: 'Proceed to checkout' });
+    const itemText = page.getByText('Slip Joint Pliers', { exact: true });
+    const quantityInput = page.getByLabel('Quantity for Slip Joint Pliers');
+
+    await page.goto('https://practicesoftwaretesting.com');
+    await slipJointPliers.click();
+
+    await expect(page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/product/)
+    await expect(productName).toHaveText('Slip Joint Pliers');
+    await expect(price).toHaveText('9.17');
+    await buttonCart.click();
+
+    await expect(alert).toBeVisible();
+    const alertStart = Date.now();
+    await expect(alert).toContainText('Product added to shopping cart');
+    await expect(alert).toBeHidden({ timeout: 9000 });
+    const alertHide = Date.now();
+    expect(alertHide - alertStart).toBeGreaterThanOrEqual(5000);
+    expect(alertHide - alertStart).toBeLessThanOrEqual(9000);
+    await expect(quantity).toHaveValue('1');
+
+    await cartIcon.click();
+    await expect(page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/checkout/)
+    await expect(proceedToCheckout).toBeVisible;
+    await expect(itemText).toBeVisible;
+    await expect(quantityInput).toHaveValue('1');
 });
