@@ -2,14 +2,14 @@ import { expect, test } from '@playwright/test';
 
 test('Test 1: Verify login with valid credentials', async ({ page }) => {
     const credentials = {
-        email: 'customer@practicesoftwaretesting.com',
-        password: 'welcome01',
+        email: process.env.USER_EMAIL,
+        password: process.env.USER_PASSWORD,
     }
     const logInButton = page.getByRole('button', { name: 'Login' });
     const email = page.getByPlaceholder('Your email');
     const password = page.getByPlaceholder('Your password');
 
-    await page.goto('https://practicesoftwaretesting.com/auth/login');
+    await page.goto(process.env.WEB_URL + '/auth/login');
     await email.fill(credentials.email);
     await password.fill(credentials.password);
     await logInButton.click()

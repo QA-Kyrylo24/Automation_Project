@@ -11,7 +11,6 @@ project-root/
 ├── playwright.config.ts   # Playwright configuration
 └── README.md              # Project documentation
 
-npm install
 npm i typescript
 npm install ts-node
 npm init playwright@latest
