@@ -13,8 +13,8 @@ export class LoginPage {
         this.password = this.page.getByPlaceholder('Your password');
     }
 
-    async navigate(url: string): Promise<void> {
-        await this.page.goto(url);
+    async navigate(): Promise<void> {
+        await this.page.goto(process.env.WEB_URL + '/auth/login');
     }
 
     async login(email: string, password: string): Promise<void> {

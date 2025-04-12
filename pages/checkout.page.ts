@@ -9,7 +9,7 @@ export class CheckoutPage {
 
     async verifyPageDetails(): Promise<void> {
         await expect(this.page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/checkout/)
-        await expect(this.proceedToCheckout).toBeVisible;
+        await expect(this.proceedToCheckout).toBeVisible();
     };
 
 }

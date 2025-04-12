@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 
-export class HeaderF {
+export class HeaderFragment {
     cartIcon:Locator;
     private page: Page;
     constructor(page: Page) {

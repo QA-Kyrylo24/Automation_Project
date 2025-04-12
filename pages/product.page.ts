@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from '@playwright/test';
-import { HeaderF } from './header.fragment';
+import { HeaderFragment } from './header.fragment';
 export class ProductPage {
     private page: Page;
     buttonCart: Locator;
@@ -8,7 +8,7 @@ export class ProductPage {
     price: Locator;
     alert: Locator;
     quantity: Locator;
-    header: HeaderF;
+    header: HeaderFragment;
     constructor(page: Page) {
         this.page = page;
         this.buttonCart = page.getByRole('button', { name: 'Add to cart' });
@@ -17,7 +17,7 @@ export class ProductPage {
         this.price = page.locator('[aria-label="unit-price"]');
         this.alert = page.getByRole('alert');
         this.quantity = page.locator('#quantity-input')
-        this.header = new HeaderF(page);
+        this.header = new HeaderFragment(page);
     };
 
     async verifyPageDetails(): Promise<void> {
