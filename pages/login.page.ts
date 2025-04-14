@@ -1,17 +1,11 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
+import { PageHolder } from './pageHolder.page';
 
-export class LoginPage {
-    private page: Page;
-    private logInButton: Locator;
-    private email: Locator;
-    private password: Locator;
+export class LoginPage extends PageHolder {
 
-    constructor(page: Page) {
-        this.page = page
-        this.logInButton = this.page.getByRole('button', { name: 'Login' });
-        this.email = this.page.getByPlaceholder('Your email');
-        this.password = this.page.getByPlaceholder('Your password');
-    }
+    private logInButton: Locator = this.page.getByRole('button', { name: 'Login' });
+    private email: Locator = this.page.getByPlaceholder('Your email');
+    private password = this.page.getByPlaceholder('Your password');
 
     async navigate(): Promise<void> {
         await this.page.goto(process.env.WEB_URL + '/auth/login');
