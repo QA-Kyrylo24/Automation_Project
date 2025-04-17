@@ -1,6 +1,7 @@
 import { Locator, expect } from '@playwright/test';
 import { SortOption } from '../typings/sortOptions';
 import { PageHolder } from './pageHolder.page';
+import { CATEGORIES, HAND_TOOLS, OTHER, POWER_TOOLS } from '../typings/filterOptions';
 export class HomePage extends PageHolder{
 
     private readonly productName: Locator = this.page.getByTestId('product-name');
@@ -29,14 +30,16 @@ export class HomePage extends PageHolder{
         return apiSortedProducts;
     }
 
-    async selectCategory(category: HAND_TOOLS | POWER_TOOLS | OTHER | CATEGORIES): Promise<void> {
+    async selectCategory(category: HAND_TOOLS | POWER_TOOLS | OTHER | CATEGORIES): Promise<[string[], string[]]> {
+        await this.categories.getByText(category).check();
         const responsePromise = this.page.waitForResponse((response) =>
-            response.url().includes('/products?between=price')
+            response.url().includes('/products?between=')
             && response.status() === 200
             && response.request().method() === 'GET',
         );
-        await this.categories.getByText(category).check();
-        await responsePromise;
+        const apiSortedProducts = (await (await responsePromise).json()).data.map((product => { return product.name}));
+        const apiSortedProductsCategories = (await (await responsePromise).json()).data.map((product => { return product.category.name}));
+        return [apiSortedProducts, apiSortedProductsCategories];
     }
 
     async getProductNames(): Promise<string[]> {
@@ -89,5 +92,8 @@ export class HomePage extends PageHolder{
     
         }
     }
+
+
+
 
 }
