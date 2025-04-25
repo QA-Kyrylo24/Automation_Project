@@ -1,18 +1,12 @@
 import { expect, test } from '@playwright/test';
-
-test('Test 1: Verify login with valid credentials', async ({ page }) => {
-    const credentials = {
-        email: process.env.USER_EMAIL,
-        password: process.env.USER_PASSWORD,
-    }
-    const logInButton = page.getByRole('button', { name: 'Login' });
-    const email = page.getByPlaceholder('Your email');
-    const password = page.getByPlaceholder('Your password');
-
-    await page.goto(process.env.WEB_URL + '/auth/login');
-    await email.fill(credentials.email);
-    await password.fill(credentials.password);
-    await logInButton.click()
+import { LoginPage } from '../../pages/login.page';
+import { HomePage } from '../../pages/home.page';
+import { ProductPage } from '../../pages/product.page';
+import { CheckoutPage } from '../../pages/checkout.page';
+test('1: Verify login with valid credentials', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.navigate();
+    await loginPage.login(process.env.USER_EMAIL!, process.env.USER_PASSWORD!);
 
     await expect(page).toHaveURL('https://practicesoftwaretesting.com/account');
     await expect(page.locator('[data-test="page-title"]')).toHaveText('My account');
@@ -20,54 +14,40 @@ test('Test 1: Verify login with valid credentials', async ({ page }) => {
 
 });
 
-test('Test 2: Verify user can view product details', async ({ page }) => {
-    const combinationPliers = page.getByText('Combination Pliers', { exact: true });
-    const productName = page.getByRole('heading', { name: 'Combination Pliers' })
-    const price = page.locator('[aria-label="unit-price"]');
-    const buttonCart = page.getByRole('button', { name: 'Add to cart' });
-    const buttonFavourites = page.getByRole('button', { name: 'Add to favourites' });
+test('2: Verify user can view product details', async ({ page }) => {
+    const homePage = new HomePage(page);
+    const productPage = new ProductPage(page);
+    await homePage.navigate();
+    await homePage.openProduct('Combination Pliers');
 
-    await page.goto('https://practicesoftwaretesting.com');
-    await combinationPliers.click();
-    await expect(page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/product/)
-    await expect(productName).toHaveText('Combination Pliers');
-    await expect(price).toHaveText('14.15');
-    await expect(buttonCart).toBeVisible();
-    await expect(buttonFavourites).toBeVisible();
+    await productPage.verifyPageDetails();
+    await expect(productPage.productName).toHaveText('Combination Pliers');
+    await expect(productPage.price).toHaveText('14.15');
+
 });
 
-test('Test 3: Verify user can add product to cart', async ({ page }) => {
-    const slipJointPliers = page.getByRole('link', { name: 'Slip Joint Pliers' })
-    const productName = page.getByRole('heading', { name: 'Slip Joint Pliers' })
-    const price = page.locator('[aria-label="unit-price"]');
-    const buttonCart = page.getByRole('button', { name: 'Add to cart' });
-    const alert = page.getByRole('alert');
-    const quantity = page.locator('#quantity-input')
-    const cartIcon = page.getByLabel('cart');
-    const proceedToCheckout = page.getByRole('button', { name: 'Proceed to checkout' });
+test('3: Verify user can add product to cart', async ({ page }) => {
     const itemText = page.getByText('Slip Joint Pliers', { exact: true });
     const quantityInput = page.getByLabel('Quantity for Slip Joint Pliers');
+    
+    const homePage = new HomePage(page);
+    const productPage = new ProductPage(page);
+    const checkOutPage = new CheckoutPage(page);
+    await homePage.navigate();
+    await homePage.openProduct('Slip Joint Pliers');
 
-    await page.goto('https://practicesoftwaretesting.com');
-    await slipJointPliers.click();
+    await productPage.verifyPageDetails();
+    await expect(productPage.productName).toHaveText('Slip Joint Pliers');
+    await expect(productPage.price).toHaveText('9.17');
+    await productPage.addToCart();
 
-    await expect(page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/product/)
-    await expect(productName).toHaveText('Slip Joint Pliers');
-    await expect(price).toHaveText('9.17');
-    await buttonCart.click();
+    await productPage.verifyAlert();
+    await productPage.verifyProductQuantity('1');
 
-    await expect(alert).toBeVisible();
-    const alertStart = Date.now();
-    await expect(alert).toContainText('Product added to shopping cart');
-    await expect(alert).toBeHidden({ timeout: 9000 });
-    const alertHide = Date.now();
-    expect(alertHide - alertStart).toBeGreaterThanOrEqual(5000);
-    expect(alertHide - alertStart).toBeLessThanOrEqual(9000);
-    await expect(quantity).toHaveValue('1');
+    await productPage.navigateToCart();
 
-    await cartIcon.click();
-    await expect(page).toHaveURL(/^https:\/\/practicesoftwaretesting\.com\/checkout/)
-    await expect(proceedToCheckout).toBeVisible;
-    await expect(itemText).toBeVisible;
+    await checkOutPage.verifyPageDetails();
+
+    await expect(itemText).toBeVisible();
     await expect(quantityInput).toHaveValue('1');
 });
