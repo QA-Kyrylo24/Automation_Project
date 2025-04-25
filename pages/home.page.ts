@@ -1,5 +1,6 @@
 import { Locator, expect } from '@playwright/test';
 import { SortOption } from '../typings/sortOptions';
+import { apiResponse } from '../typings/apiResponse';
 import { PageHolder } from './pageHolder.page';
 import { CATEGORIES, HAND_TOOLS, OTHER, POWER_TOOLS } from '../typings/filterOptions';
 export class HomePage extends PageHolder{
@@ -12,11 +13,11 @@ export class HomePage extends PageHolder{
 
 
     async navigate(): Promise<void> {
-        this.page.goto(process.env.WEB_URL!);
+        await this.page.goto(process.env.WEB_URL!);
     }
 
     async openProduct(productName: string): Promise<void> {
-        this.page.getByRole('link', { name: productName }).click();
+        await this.page.getByRole('link', { name: productName }).click();
     }
 
     async selectSortOption(option: SortOption): Promise<string[]> {
@@ -25,8 +26,10 @@ export class HomePage extends PageHolder{
             && response.status() === 200
             && response.request().method() === 'GET',
         );
-        this.sortDropDown.selectOption(option)
-        const apiSortedProducts = (await (await responsePromise).json()).data.map((product => { return product.name}));
+        await this.sortDropDown.selectOption(option)
+        const response = await responsePromise;
+        const { data } = await response.json() as { data: apiResponse[] };
+        const apiSortedProducts = data.map((product) => product.name);
         return apiSortedProducts;
     }
 
@@ -37,8 +40,10 @@ export class HomePage extends PageHolder{
             && response.status() === 200
             && response.request().method() === 'GET',
         );
-        const apiSortedProducts = (await (await responsePromise).json()).data.map((product => { return product.name}));
-        const apiSortedProductsCategories = (await (await responsePromise).json()).data.map((product => { return product.category.name}));
+        const response = await responsePromise;
+        const { data } = await response.json() as { data: apiResponse[] };
+        const apiSortedProducts = data.map((product) => product.name);
+        const apiSortedProductsCategories = data.map((product => { return product.category.name}));
         return [apiSortedProducts, apiSortedProductsCategories];
     }
 

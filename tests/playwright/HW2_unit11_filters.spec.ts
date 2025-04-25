@@ -21,14 +21,16 @@ test(`Verify user can filter products by category "Sander"`, async ({ page }) =>
     const uiProductNames = await homePage.getProductNames();
 
     expect(uiProductNames).toEqual(filteredApiProductNames[0]);
-    uiProductNames.forEach((name) => name.includes(POWER_TOOLS.SANDER))
+    uiProductNames.forEach((name) => {
+        expect(name.includes(POWER_TOOLS.SANDER)).toBe(true);
+        });
 
 
 
 });
 
 dataCategories.forEach((checkboxes) => {
-    test(`Verify user can filter products by category ${checkboxes}`, async ({ page }) => {
+    test(`Verify user can filter products by category ${checkboxes.join(', ')}`, async ({ page }) => {
         let filteredApiProductNames: [string[], string[]] = [[], []];
         const homePage = new HomePage(page);
         await homePage.navigate();

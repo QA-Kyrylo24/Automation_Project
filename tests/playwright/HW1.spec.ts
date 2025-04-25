@@ -3,7 +3,7 @@ import { LoginPage } from '../../pages/login.page';
 import { HomePage } from '../../pages/home.page';
 import { ProductPage } from '../../pages/product.page';
 import { CheckoutPage } from '../../pages/checkout.page';
-test('Test 1: Verify login with valid credentials', async ({ page }) => {
+test('1: Verify login with valid credentials', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.navigate();
     await loginPage.login(process.env.USER_EMAIL!, process.env.USER_PASSWORD!);
@@ -14,7 +14,7 @@ test('Test 1: Verify login with valid credentials', async ({ page }) => {
 
 });
 
-test('Test 2: Verify user can view product details', async ({ page }) => {
+test('2: Verify user can view product details', async ({ page }) => {
     const homePage = new HomePage(page);
     const productPage = new ProductPage(page);
     await homePage.navigate();
@@ -26,7 +26,7 @@ test('Test 2: Verify user can view product details', async ({ page }) => {
 
 });
 
-test('Test 3: Verify user can add product to cart', async ({ page }) => {
+test('3: Verify user can add product to cart', async ({ page }) => {
     const itemText = page.getByText('Slip Joint Pliers', { exact: true });
     const quantityInput = page.getByLabel('Quantity for Slip Joint Pliers');
     

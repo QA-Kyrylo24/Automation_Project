@@ -1,11 +1,36 @@
-import { defineConfig } from "eslint/config";
-import js from "@eslint/js";
-import globals from "globals";
 import tseslint from "typescript-eslint";
+import js from '@eslint/js';
+import playwright from 'eslint-plugin-playwright'
 
-
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts}"], plugins: { js }, extends: ["js/recommended"] },
-  { files: ["**/*.{js,mjs,cjs,ts}"], languageOptions: { globals: globals.browser } },
-  tseslint.configs.recommended,
-]);
+export default [
+  {
+    ignores: [
+      "practice_tasks/examples.ts",
+      "practice_tasks/taskssss.ts",
+      "tests-examples/",
+      'eslint.config.mjs',
+    ],
+  },
+  js.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: process.cwd(),
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+    },
+  },
+  {
+    files: ['tests/**'],
+    ...playwright.configs['flat/recommended'],
+    rules: {
+      ...playwright.configs['flat/recommended'].rules,
+      'playwright/valid-expect': 'off'
+    }
+  
+  }
+]
