@@ -1,12 +1,12 @@
 import { expect, Locator } from '@playwright/test';
 import { test } from '../../fixtures/fixture';
-import { ProductPage } from '../../pages/product.page';
 
-test('1UPD: Verify login', async ({ page, loginPage }) => {
 
-    await expect(page).toHaveURL('https://practicesoftwaretesting.com/account');
-    await expect(page.locator('[data-test="page-title"]')).toHaveText('My account');
-    await expect(page.getByText('Jane Doe')).toBeVisible();
+test('1UPD: Verify login', async ({ loginPage }) => {
+
+    await expect(loginPage).toHaveURL('https://practicesoftwaretesting.com/account');
+    await expect(loginPage.locator('[data-test="page-title"]')).toHaveText('My account');
+    await expect(loginPage.getByText('Jane Doe')).toBeVisible();
 
 });
 
@@ -41,7 +41,7 @@ test('3UPD: Verify add product to cart', async ({ page, productSlipJointPliersPa
 });
 
 
-test('4NEW: Verify login, order, payment', async ({ page, loginPage, homePage, productPage, checkoutPage }) => {
+test('4NEW: Verify login, order, payment', async ({ page, app }) => {
 
 const productHomePage: Locator = page.locator('[data-test="product-name"]').nth(0);
 const priceHomePage: Locator = page.locator('[data-test="product-price"]').nth(0);
@@ -51,29 +51,29 @@ const cartTotalPrice: Locator = page.getByTestId('cart-total');
 
 await expect(productHomePage).toHaveText(/.+/);
 await expect(priceHomePage).toHaveText(/.+/);
-const productName: string = await productHomePage.textContent();
-const productPrice: string = await priceHomePage.textContent();
+const productName: string = await productHomePage.innerText();
+const productPrice: string = await priceHomePage.innerText();
 
-await homePage.openProduct(productName);
-await productPage.addToCart();
-await productPage.navigateToCart();
+await app.homePage.openProduct(productName);
+await app.productPage.addToCart();
+await app.productPage.navigateToCart();
 await expect(cartProductName).toHaveText(productName);
 await expect(cartProductPrice).toHaveText(productPrice);
 await expect(cartTotalPrice).toHaveText(productPrice);
 
-await checkoutPage.checkout();
-await expect(checkoutPage.helloMessage).toBeVisible();
-await checkoutPage.checkout();
-await checkoutPage.state.fill('State');
-await checkoutPage.postcode.fill('12345');
-await checkoutPage.checkout();
-await checkoutPage.paymentMethod.selectOption('Credit Card');
-await checkoutPage.cardNumber.fill('1111-2222-3333-4444');
-await checkoutPage.expirationDate.fill('12/2030');
-await checkoutPage.cvv.fill('123');
-await checkoutPage.cardHolderName.fill('John Doe');
-await checkoutPage.confirmButton.click();
-await expect(checkoutPage.confirmMessage).toBeVisible();
+await app.checkoutPage.checkout();
+await expect(app.checkoutPage.helloMessage).toBeVisible();
+await app.checkoutPage.checkout();
+await app.checkoutPage.state.fill('State');
+await app.checkoutPage.postcode.fill('12345');
+await app.checkoutPage.checkout();
+await app.checkoutPage.paymentMethod.selectOption('Credit Card');
+await app.checkoutPage.cardNumber.fill('1111-2222-3333-4444');
+await app.checkoutPage.expirationDate.fill('12/2030');
+await app.checkoutPage.cvv.fill('123');
+await app.checkoutPage.cardHolderName.fill('John Doe');
+await app.checkoutPage.confirmButton.click();
+await expect(app.checkoutPage.confirmMessage).toBeVisible();
 
 });
 

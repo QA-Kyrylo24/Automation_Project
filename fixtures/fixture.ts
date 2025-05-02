@@ -1,16 +1,31 @@
-import { test as base , expect} from '@playwright/test';
+import { test as base, expect, Page } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
 import { HomePage } from '../pages/home.page';
 import { ProductPage } from '../pages/product.page';
 import { CheckoutPage } from '../pages/checkout.page';
 
 type Fixtures = {
-    loginPage: LoginPage;
+    loginPage: Page;
     homePage: HomePage;
     productPage: ProductPage;
     checkoutPage: CheckoutPage;
     productCombinationPliersPage: ProductPage;
     productSlipJointPliersPage: ProductPage;
+    app: App;
+};
+
+class App {
+    loginPage: LoginPage;
+    homePage: HomePage;
+    productPage: ProductPage;
+    checkoutPage: CheckoutPage;
+    constructor(page: Page) {
+        this.loginPage = new LoginPage(page);
+        this.homePage = new HomePage(page);
+        this.productPage = new ProductPage(page);
+        this.checkoutPage = new CheckoutPage(page);
+    }
+
 };
 
 export const test = base.extend<Fixtures>({
@@ -19,7 +34,7 @@ export const test = base.extend<Fixtures>({
         await loginPage.navigate();
         await loginPage.login(process.env.USER_EMAIL!, process.env.USER_PASSWORD!);
         await expect(page).toHaveURL(/\/account$/);
-        await use(loginPage);
+        await use(page);
     },
     homePage: async ({ page }, use) => {
         const homePage = new HomePage(page);
@@ -49,5 +64,10 @@ export const test = base.extend<Fixtures>({
         await homePage.navigate();
         await homePage.openProduct('Slip Joint Pliers');
         await use(productPage);
+    },
+
+    app: async ({  loginPage, homePage}, use) => {
+        const app = new App(loginPage);
+        await use(app);
     },
 });
