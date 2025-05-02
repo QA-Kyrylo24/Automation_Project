@@ -5,7 +5,7 @@ export class HeaderFragment {
     private page: Page;
     constructor(page: Page) {
         this.page = page;
-        this.cartIcon = page.getByLabel('cart');
+        this.cartIcon = page.getByTestId('nav-cart');
     }
 
 }
