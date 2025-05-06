@@ -11,3 +11,6 @@ tests-examples
 /blob-report/
 /playwright/.cache/
 .env
+tests/.auth
+
+
