@@ -2,11 +2,11 @@ import { expect, Locator } from '@playwright/test';
 import { test } from '../../fixtures/fixture';
 
 
-test('1UPD: Verify login', async ({ loginPage }) => {
+test('1UPD: Verify login', async ({ loginPage, appObjects }) => {
 
     await expect(loginPage).toHaveURL('https://practicesoftwaretesting.com/account');
-    await expect(loginPage.locator('[data-test="page-title"]')).toHaveText('My account');
-    await expect(loginPage.getByText('Jane Doe')).toBeVisible();
+    await expect(loginPage.getByTestId('page-title')).toHaveText('My account');
+    await expect(appObjects.productPage.header.accountDropDown).toHaveText('Jane Doe');
 
 });
 
@@ -63,16 +63,7 @@ await expect(cartTotalPrice).toHaveText(productPrice);
 
 await app.checkoutPage.checkout();
 await expect(app.checkoutPage.helloMessage).toBeVisible();
-await app.checkoutPage.checkout();
-await app.checkoutPage.state.fill('State');
-await app.checkoutPage.postcode.fill('12345');
-await app.checkoutPage.checkout();
-await app.checkoutPage.paymentMethod.selectOption('Credit Card');
-await app.checkoutPage.cardNumber.fill('1111-2222-3333-4444');
-await app.checkoutPage.expirationDate.fill('12/2030');
-await app.checkoutPage.cvv.fill('123');
-await app.checkoutPage.cardHolderName.fill('John Doe');
-await app.checkoutPage.confirmButton.click();
+await app.checkoutPage.purchaseWithDefaultUser();
 await expect(app.checkoutPage.confirmMessage).toBeVisible();
 
 });

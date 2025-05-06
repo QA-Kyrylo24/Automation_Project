@@ -3,6 +3,7 @@ import { LoginPage } from '../pages/login.page';
 import { HomePage } from '../pages/home.page';
 import { ProductPage } from '../pages/product.page';
 import { CheckoutPage } from '../pages/checkout.page';
+import { App } from '../typings/appClass';
 
 type Fixtures = {
     loginPage: Page;
@@ -12,21 +13,10 @@ type Fixtures = {
     productCombinationPliersPage: ProductPage;
     productSlipJointPliersPage: ProductPage;
     app: App;
+    appObjects: App;
 };
 
-class App {
-    loginPage: LoginPage;
-    homePage: HomePage;
-    productPage: ProductPage;
-    checkoutPage: CheckoutPage;
-    constructor(page: Page) {
-        this.loginPage = new LoginPage(page);
-        this.homePage = new HomePage(page);
-        this.productPage = new ProductPage(page);
-        this.checkoutPage = new CheckoutPage(page);
-    }
 
-};
 
 export const test = base.extend<Fixtures>({
     loginPage: async ({ page }, use) => {
@@ -68,6 +58,11 @@ export const test = base.extend<Fixtures>({
 
     app: async ({  loginPage, homePage}, use) => {
         const app = new App(loginPage);
+        await use(app);
+    },
+
+    appObjects: async ({ page }, use) => {
+        const app = new App(page);
         await use(app);
     },
 });
