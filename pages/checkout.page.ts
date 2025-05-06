@@ -23,6 +23,19 @@ export class CheckoutPage extends PageHolder {
         await this.proceedToCheckout.click()
     }
 
+    async purchaseWithDefaultUser(): Promise<void> {
+        await this.checkout();
+        await this.state.fill('State');
+        await this.postcode.fill('12345');
+        await this.checkout();
+        await this.paymentMethod.selectOption('Credit Card');
+        await this.cardNumber.fill('1111-2222-3333-4444');
+        await this.expirationDate.fill('12/2030');
+        await this.cvv.fill('123');
+        await this.cardHolderName.fill('John Doe');
+        await this.confirmButton.click(); 
+    }
+
 }
 
 
