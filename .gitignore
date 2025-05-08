@@ -11,10 +11,5 @@ tests-examples
 /blob-report/
 /playwright/.cache/
 .env
-<<<<<<< HEAD
 tests/.auth
 
-
-=======
-.auth
->>>>>>> a935b2a79a70cc3361d6e77c9a15d3ec03c137b9
