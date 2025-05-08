@@ -10,7 +10,7 @@ test('authenticate', async ({ request }) => {
         'password': process.env.USER_PASSWORD!,
       }
     });
-    const jsonData = await resp.json();
+    const jsonData = await resp.json() as {access_token: string};
     token = jsonData.access_token;
     fs.writeFileSync('tests/.auth/token.json', JSON.stringify({ token }));
    

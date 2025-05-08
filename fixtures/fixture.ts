@@ -15,7 +15,6 @@ type Fixtures = {
     app: App;
     appObjects: App;
     loginPageWithStorageState: Page;
-
 };
 
 
