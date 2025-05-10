@@ -14,6 +14,7 @@ type Fixtures = {
     productSlipJointPliersPage: ProductPage;
     app: App;
     appObjects: App;
+    loginPageWithStorageState: Page;
 };
 
 
@@ -64,5 +65,11 @@ export const test = base.extend<Fixtures>({
     appObjects: async ({ page }, use) => {
         const app = new App(page);
         await use(app);
+    },
+    
+    loginPageWithStorageState: async ({ browser }, use) => {
+        const context = await browser.newContext({ storageState: 'tests/.auth/user.json' });
+        const page = await context.newPage();
+        await use(page);
     },
 });

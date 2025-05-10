@@ -9,6 +9,7 @@ export default [
       "practice_tasks/taskssss.ts",
       "tests-examples/",
       'eslint.config.mjs',
+      'mochawesome-report',
     ],
   },
   js.configs.recommended,

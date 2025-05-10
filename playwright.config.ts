@@ -29,7 +29,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://jsonplaceholder.typicode.com',
+    baseURL: process.env.WEB_URL,
     testIdAttribute: 'data-test',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -37,20 +37,28 @@ export default defineConfig({
   timeout: 20000,
   /* Configure projects for major browsers */
   projects: [
+    { name: 'UIsetup', testMatch: /uiAuth\.setup\.ts/ },
+    { name: 'APIsetup', testMatch: /apiAuth\.setup\.ts/ },
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'],
+        // storageState: 'tests/.auth/user.json',
+      },
+      // dependencies: ['UIsetup'],
+      // dependencies: ['APIsetup'],
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
+
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {
