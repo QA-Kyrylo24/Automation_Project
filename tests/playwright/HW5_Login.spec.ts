@@ -1,6 +1,5 @@
 import {  expect } from '@playwright/test';
 import fs from 'fs';
-const { token } = JSON.parse(fs.readFileSync('tests/.auth/token.json', 'utf-8'))  as { token: string };;
 import { test } from '../../fixtures/fixture';
 
 // Uncomment storageState in config and UIsetup dependency
@@ -26,6 +25,7 @@ test('Verify login with fixture containing storageState', async ({ loginPageWith
 
 // Uncomment APIsetup dependency
 test('Verify API login', async ({ page }) => {
+    const { token } = JSON.parse(fs.readFileSync('tests/.auth/token.json', 'utf-8'))  as { token: string };
     await page.goto('/account');  
     await page.evaluate((token) => {
       localStorage.setItem('auth-token', token);
