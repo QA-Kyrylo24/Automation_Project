@@ -48,6 +48,7 @@ export default defineConfig({
   projects: [
     { name: 'UIsetup', testMatch: /uiAuth\.setup\.ts/ },
     { name: 'APIsetup', testMatch: /apiAuth\.setup\.ts/ },
+    // { name: 'byTag', grep: /@runCI/, },   
     {
       name: 'chromium',
       use: {

@@ -34,7 +34,9 @@ test('2: Verify user can view product details', async ({ page }) => {
     });
 });
 
-test('3: Verify user can add product to cart', async ({ page }) => {
+test('3: Verify user can add product to cart', {
+  tag: '@runCI',
+}, async ({ page }) => {
     const itemText = page.getByText('Slip Joint Pliers', { exact: true });
     const quantityInput = page.getByLabel('Quantity for Slip Joint Pliers');
 

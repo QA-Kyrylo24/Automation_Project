@@ -14,7 +14,9 @@ dataSortOptions.forEach((sortBy) => {
 
 
 
-test(`Verify user can filter products by category "Sander"`, async ({ page }) => {
+test(`Verify user can filter products by category "Sander"`, {
+  tag: '@runCI',
+}, async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.navigate();
     const filteredApiProductNames: [string[], string[]] = await homePage.selectCategory(POWER_TOOLS.SANDER);
@@ -30,7 +32,9 @@ test(`Verify user can filter products by category "Sander"`, async ({ page }) =>
 });
 
 dataCategories.forEach((checkboxes) => {
-    test(`Verify user can filter products by category ${checkboxes.join(', ')}`, async ({ page }) => {
+    test(`Verify user can filter products by category ${checkboxes.join(', ')}`, {
+  tag: '@runCI',
+}, async ({ page }) => {
         let filteredApiProductNames: [string[], string[]] = [[], []];
         const homePage = new HomePage(page);
         await homePage.navigate();
