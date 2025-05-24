@@ -17,19 +17,27 @@ test('1: Verify login with valid credentials', async ({ page }) => {
 test('2: Verify user can view product details', async ({ page }) => {
     const homePage = new HomePage(page);
     const productPage = new ProductPage(page);
-    await homePage.navigate();
-    await homePage.openProduct('Combination Pliers');
+    await test.step('Open Home page', async () => {
+        await homePage.navigate();
+    });
+    await test.step('Open Combination Pliers product', async () => {
+        await homePage.openProduct('Combination Pliers')
+    });
 
-    await productPage.verifyPageDetails();
-    await expect(productPage.productName).toHaveText('Combination Pliers');
-    await expect(productPage.price).toHaveText('14.15');
+    await test.step('Verify Page details', async () => {
+        await productPage.verifyPageDetails();
+    });
 
+    await test.step('Check product name and price', async () => {
+        await expect(productPage.productName).toHaveText('Combination Pliers');
+        await expect(productPage.price).toHaveText('14.15');
+    });
 });
 
 test('3: Verify user can add product to cart', async ({ page }) => {
     const itemText = page.getByText('Slip Joint Pliers', { exact: true });
     const quantityInput = page.getByLabel('Quantity for Slip Joint Pliers');
-    
+
     const homePage = new HomePage(page);
     const productPage = new ProductPage(page);
     const checkOutPage = new CheckoutPage(page);
