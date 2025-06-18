@@ -24,6 +24,7 @@
     "@types/node": "^22.13.16",
     "axios": "^1.8.4",
     "chai": "^4.5.0",
+    "cypress": "^14.5.0",
     "eslint": "^9.25.0",
     "eslint-plugin-playwright": "^2.2.0",
     "globals": "^16.0.0",

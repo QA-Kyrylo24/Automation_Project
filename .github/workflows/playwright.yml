@@ -32,7 +32,7 @@ jobs:
           USER_PASSWORD: 'Welcome01'
           USER_NAME: 'Jane Doe'
           TESTOMATIO: ''
-        run: npx playwright test --grep @runCI
+        run: npx playwright test --grep @runtestCI
 
       - name: Upload Playwright Report
         if: ${{ !cancelled() }}
