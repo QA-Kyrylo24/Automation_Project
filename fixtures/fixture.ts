@@ -41,6 +41,7 @@ export const test = base.extend<Fixtures>({
         await use(checkoutPage);
     },
 
+    // Custom fixture just for Task purpose
     productCombinationPliersPage: async ({ page }, use) => {
         const productPage = new ProductPage(page);
         const homePage = new HomePage(page);
@@ -48,7 +49,8 @@ export const test = base.extend<Fixtures>({
         await homePage.openProduct('Combination Pliers');
         await use(productPage);
     },
-
+    
+   // Custom fixture just for Task purpose
     productSlipJointPliersPage: async ({ page }, use) => {
         const productPage = new ProductPage(page);
         const homePage = new HomePage(page);
